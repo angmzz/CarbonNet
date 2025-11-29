@@ -1,55 +1,108 @@
-const { heroui } = require("@heroui/react");
-
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
+  darkMode: ["class"],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class",
-  plugins: [heroui()],
   theme: {
     extend: {
       colors: {
-        carbonOrange: {
-          DEFAULT: '#ff8800', // Main orange
-          dark: '#cc7000',    // Darker orange
-          light: '#ffb347',   // Lighter orange
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))'
         },
-        carbonDark: '#0a192f',
-        carbonGray: {
-          light: '#f3f4f6',
-          DEFAULT: '#6b7280',
-          dark: '#111827',
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))'
         },
-        carbonBlue: {
-          DEFAULT: '#2563eb',
-          dark: '#1e3a8a',
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))'
         },
-        carbonYellow: {
-          DEFAULT: '#facc15',
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))'
         },
-        carbonRed: {
-          DEFAULT: '#ef4444',
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))'
         },
-      },
-      fontFamily: {
-        sans: ['Poppins', 'Inter', 'Roboto', 'Arial', 'sans-serif'],
-        display: ['Montserrat', 'Inter', 'sans-serif'],
-      },
-      boxShadow: {
-  'carbon': '0 4px 24px 0 rgba(255,136,0,0.08)',
-        'carbon-dark': '0 4px 24px 0 rgba(10,25,47,0.24)',
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))'
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))'
+        },
+        // Tremor colors
+        tremor: {
+          brand: {
+            faint: "#eff6ff", // blue-50
+            muted: "#bfdbfe", // blue-200
+            subtle: "#60a5fa", // blue-400
+            DEFAULT: "#3b82f6", // blue-500
+            emphasis: "#1d4ed8", // blue-700
+            inverted: "#ffffff", // white
+          },
+          background: {
+            muted: "#f9fafb", // gray-50
+            subtle: "#f3f4f6", // gray-100
+            DEFAULT: "#ffffff", // white
+            emphasis: "#374151", // gray-700
+          },
+          border: {
+            DEFAULT: "#e5e7eb", // gray-200
+          },
+          ring: {
+            DEFAULT: "#e5e7eb", // gray-200
+          },
+          content: {
+            subtle: "#9ca3af", // gray-400
+            DEFAULT: "#6b7280", // gray-500
+            emphasis: "#374151", // gray-700
+            strong: "#111827", // gray-900
+            inverted: "#ffffff", // white
+          },
+        },
       },
       borderRadius: {
-        'xl': '1rem',
-        '2xl': '1.5rem',
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)'
       },
-      screens: {
-        'xs': '400px',
-        '3xl': '1920px',
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "fade-in-up": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "pulse-slow": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
       },
-    },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in-up": "fade-in-up 0.5s ease-out",
+        "pulse-slow": "pulse-slow 3s infinite",
+      },
+    }
   },
-};
+  plugins: [require("tailwindcss-animate")],
+}

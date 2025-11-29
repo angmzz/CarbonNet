@@ -1,80 +1,123 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Icon } from "@iconify/react";
+import {
+  Home,
+  ClipboardList,
+  Target,
+  BarChart2,
+  FileText,
+  Zap,
+  GitBranch,
+  Bell,
+  History,
+  Users,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const sidebarItems = [
-  { icon: "lucide:home", label: "Inicio", path: "/dashboard" },
-  { icon: "lucide:clipboard-list", label: "Emisiones", path: "/dashboard/emissions" },
-  { icon: "lucide:target", label: "Metas", path: "/dashboard/goals" },
-  { icon: "lucide:bar-chart-2", label: "Indicadores", path: "/dashboard/indicators" },
-  { icon: "lucide:file-text", label: "Informes", path: "/dashboard/reports" },
-  { icon: "lucide:zap", label: "Iniciativas", path: "/dashboard/initiatives" },
-  { icon: "lucide:git-branch", label: "Escenarios", path: "/dashboard/scenarios" },
-  { icon: "lucide:bell", label: "Alertas", path: "/dashboard/alerts" },
-  { icon: "lucide:history", label: "Historial", path: "/dashboard/history" },
-  { icon: "lucide:users", label: "Usuarios", path: "/dashboard/users" },
+  { icon: Home, label: "Inicio", path: "/dashboard" },
+  { icon: ClipboardList, label: "Registro de emisiones", path: "/dashboard/emissions" },
+  { icon: Target, label: "Metas y objetivos", path: "/dashboard/goals" },
+  { icon: BarChart2, label: "Indicadores y gráficos", path: "/dashboard/indicators" },
+  { icon: FileText, label: "Informes", path: "/dashboard/reports" },
+  { icon: Zap, label: "Iniciativas de mitigación", path: "/dashboard/initiatives" },
+  { icon: GitBranch, label: "Simulación de escenarios", path: "/dashboard/scenarios" },
+  { icon: Bell, label: "Alertas y notificaciones", path: "/dashboard/alerts" },
+  { icon: History, label: "Historial/Auditoría", path: "/dashboard/history" },
+  { icon: Users, label: "Gestión de usuarios", path: "/dashboard/users" },
 ];
 
-const Sidebar = ({ collapsed, setCollapsed }) => {
+interface SidebarProps {
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
+}
+
+const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   const location = useLocation();
 
   return (
     <>
-      {!collapsed && (
-  <aside className={`dashboard-bg min-h-screen border-r border-gray-300 dark:border-carbonDark flex-shrink-0 flex flex-col justify-between min-w-[9rem] sm:min-w-[12rem] w-auto p-2 sm:p-4`}>
-          <nav>
-            <ul className="space-y-1 sm:space-y-2">
-              {sidebarItems.map((item) => (
-                <li key={item.path}>
+      <AnimatePresence mode="wait">
+        {!collapsed && (
+          <motion.aside
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "16rem", opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed left-0 top-0 h-screen z-40 bg-slate-950/90 backdrop-blur-xl border-r border-white/10 shadow-2xl shadow-black/50 flex flex-col"
+          >
+            <div className="p-6 flex items-center justify-between">
+              <span className="text-xl font-bold bg-gradient-to-r bg-clip-text truncate">
+                BHP CarbonNet
+              </span>
+              <button
+                onClick={() => setCollapsed(true)}
+                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            </div>
+
+            <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1 custom-scrollbar">
+              {sidebarItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
                   <Link
+                    key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative overflow-hidden",
                       location.pathname === item.path
-                        ? "font-semibold"
-                        : "opacity-80 hover:opacity-100"
-                    } dashboard-bg group`}
+                        ? "bg-primary/10 text-primary shadow-[0_0_15px_rgba(255,107,0,0.3)]"
+                        : "text-slate-400 hover:text-slate-100 hover:bg-white/5"
+                    )}
                   >
-                    <Icon
-                      icon={item.icon}
-                      width="22"
-                      height="22"
-                      className={`transition-colors ${location.pathname === item.path ? "text-orange-400" : ""} group-hover:text-orange-400 sm:w-7 sm:h-7`}
-                    />
-                    <span
-                      className={`hidden sm:inline text-base font-medium truncate ${
-                        location.pathname === item.path
-                          ? 'bg-gradient-to-r from-orange-400 to-orange-600 text-transparent bg-clip-text'
-                          : ''
-                      } group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-orange-600 group-hover:text-transparent group-hover:bg-clip-text`}
-                      style={{ maxWidth: 160 }}
-                    >
-                      {item.label}
-                    </span>
+                    {location.pathname === item.path && (
+                      <motion.div
+                        layoutId="active-nav"
+                        className="absolute left-0 w-1 h-6 bg-primary rounded-r-full glow-orange"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      />
+                    )}
+                    <item.icon className={cn(
+                      "w-5 h-5 transition-colors",
+                      location.pathname === item.path ? "text-primary drop-shadow-[0_0_8px_rgba(255,107,0,0.5)]" : "text-slate-500 group-hover:text-slate-300"
+                    )} />
+                    <span className="font-medium text-sm truncate">{item.label}</span>
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className="flex justify-center pb-2">
-            <button
-              className="bg-orange-500 text-white border border-white rounded-full p-2 shadow"
-              onClick={() => setCollapsed(true)}
-              aria-label="Ocultar barra lateral"
-            >
-              <Icon icon="lucide:chevron-left" width="20" height="20" />
-            </button>
-          </div>
-        </aside>
-      )}
+                );
+              })}
+            </nav>
+
+            <div className="p-4 border-t border-white/5">
+              <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/5 border border-white/5">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs">
+                  JD
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate">John Doe</p>
+                  <p className="text-xs text-slate-400 truncate">Admin</p>
+                </div>
+              </div>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
       {collapsed && (
-        <button
-          className="fixed bottom-4 left-4 z-[9999] border border-white rounded-full p-2 shadow"
-          style={{ backgroundColor: '#22c55e !important', color: '#fff !important' }}
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="fixed bottom-6 left-6 z-50 p-3 rounded-full bg-primary text-white shadow-lg shadow-primary/30 hover:bg-primary/90 transition-colors"
           onClick={() => setCollapsed(false)}
-          aria-label="Mostrar barra lateral"
         >
-          <Icon icon="lucide:chevron-right" width="20" height="20" style={{ color: '#fff !important' }} />
-        </button>
+          <ChevronRight className="w-6 h-6" />
+        </motion.button>
       )}
     </>
   );

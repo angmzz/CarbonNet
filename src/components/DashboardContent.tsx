@@ -13,20 +13,20 @@ import Users from "./dashboard/Users";
 
 const DashboardContent = () => {
   return (
-  <main className="flex-1 overflow-x-hidden overflow-y-auto p-2 xs:p-4 sm:p-6 dashboard-bg min-w-0">
+    <div className="w-full h-full">
       <Routes>
-  <Route path="" element={<Home />} />
-  <Route path="emissions" element={<Emissions />} />
-  <Route path="goals" element={<Goals />} />
-  <Route path="indicators" element={<Indicators />} />
-  <Route path="reports" element={<Reports />} />
-  <Route path="initiatives" element={<Initiatives />} />
-  <Route path="scenarios" element={<Scenarios />} />
-  <Route path="alerts" element={<Alerts />} />
-  <Route path="history" element={<History />} />
-  <Route path="users" element={<Users />} />
+        <Route path="" element={<Home />} />
+        <Route path="emissions" element={<Emissions />} />
+        <Route path="goals" element={<Goals />} />
+        <Route path="indicators" element={<Indicators />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="initiatives" element={<Initiatives />} />
+        <Route path="scenarios" element={<Scenarios />} />
+        <Route path="alerts" element={<Alerts />} />
+        <Route path="history" element={<History />} />
+        <Route path="users" element={<Users />} />
       </Routes>
-    </main>
+    </div>
   );
 };
 
