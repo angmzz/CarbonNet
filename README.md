@@ -6,6 +6,8 @@ Esta aplicación es **exclusivamente Frontend**. No cuenta con una base de datos
 
 ## Visualización en Vercel
 
+![Demo CarbonNet](./assets/CarbonNetpreview.gif)
+
 La aplicación se encuentra desplegada y accesible públicamente en Vercel.
 
 1.  **Acceso**: Ingresa a la URL del despliegue en Vercel (Visible en el mismo repositorio).
